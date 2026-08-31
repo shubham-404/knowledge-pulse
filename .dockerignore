@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.github
+
+.env*
+!.env.example
+
+coverage
+playwright-report
+test-results
+vitest.config.mts
+README.md
+
+*.log
+.DS_Store
+Thumbs.db
