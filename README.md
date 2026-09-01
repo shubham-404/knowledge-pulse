@@ -4,6 +4,37 @@ A Next.js application foundation built with a modern, test-first workflow and a 
 
 The project is intentionally kept small at the foundation level. The goal is to make future features easy to build, test, review, and deploy without turning the codebase into a collection of unnecessary tools.
 
+## Contents
+* Stack
+* Project structure
+* Getting started
+  - Prerequisites
+  - Install dependencies
+  - Environment
+  - Start development
+* Useful commands
+* How the application is built
+  - Forms
+* Testing strategy
+  - Unit/component tests
+  - End-to-end tests
+* Development vs production
+  - Development
+  - Production
+* Environment variables
+* CI workflow
+* Docker
+* Recommended development workflow
+* Points to consider
+  - Keep the stack small
+  - Keep validation centralized
+  - Keep client and server boundaries explicit
+  - Test behavior, not implementation details
+  - Avoid premature infrastructure
+  - Keep CI aligned with local development
+* Current status
+* Before adding a new feature
+
 ## Stack
 
 - **Next.js** — App Router + TypeScript
