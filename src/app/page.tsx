@@ -15,6 +15,7 @@ import {
   Upload,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar/Navbar";
+import Link from "next/link";
 
 const insights = [
   {
@@ -75,15 +76,15 @@ export default function KnowledgePulseHome() {
               </p>
 
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700">
+                <Link href="#insights" className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700">
                   Start discovering insights
                   <ArrowRight className="h-4 w-4" />
-                </button>
+                </Link>
 
-                <button className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">
+                <Link href="#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">
                   See how it works
                   <ChevronRight className="h-4 w-4" />
-                </button>
+                </Link>
               </div>
 
               <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-slate-500">
@@ -612,10 +613,10 @@ export default function KnowledgePulseHome() {
                   product intelligence.
                 </p>
 
-                <button className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600">
+                <Link href="#product" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
                   Explore the platform
                   <ArrowRight className="h-4 w-4" />
-                </button>
+                </Link>
               </div>
 
               <div className="space-y-3">
@@ -676,10 +677,10 @@ export default function KnowledgePulseHome() {
               your product, documentation and customer experience teams.
             </p>
 
-            <button className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-indigo-700 shadow-lg transition hover:bg-indigo-50">
+            <Link href="#product" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-indigo-700 shadow-lg transition hover:bg-indigo-50">
               Get started with KnowledgePulse
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </Link>
           </div>
         </section>
       </main>
@@ -689,15 +690,15 @@ export default function KnowledgePulseHome() {
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-8 md:flex-row">
             <div>
-              <a href="#" className="flex items-center gap-2.5">
+              <Link href="#" className="flex items-center gap-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white">
                   <Sparkles className="h-4 w-4" />
                 </div>
 
-                <span className="font-bold tracking-tight">
+                <span className="font-bold tracking-tight text-slate-950">
                   Knowledge<span className="text-indigo-600">Pulse</span>
                 </span>
-              </a>
+              </Link>
 
               <p className="mt-3 max-w-xs text-sm leading-6 text-slate-500">
                 AI-driven conversational customer intelligence and
@@ -711,15 +712,15 @@ export default function KnowledgePulseHome() {
                   Platform
                 </p>
                 <div className="mt-4 space-y-3">
-                  <a className="block text-sm text-slate-500 hover:text-slate-950" href="#product">
+                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#product">
                     Product
-                  </a>
-                  <a className="block text-sm text-slate-500 hover:text-slate-950" href="#insights">
+                  </Link>
+                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#insights">
                     Insights
-                  </a>
-                  <a className="block text-sm text-slate-500 hover:text-slate-950" href="#features">
+                  </Link>
+                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#features">
                     Features
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -728,15 +729,15 @@ export default function KnowledgePulseHome() {
                   Company
                 </p>
                 <div className="mt-4 space-y-3">
-                  <a className="block text-sm text-slate-500 hover:text-slate-950" href="#">
+                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#">
                     About
-                  </a>
-                  <a className="block text-sm text-slate-500 hover:text-slate-950" href="#">
+                  </Link>
+                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#">
                     Contact
-                  </a>
-                  <a className="block text-sm text-slate-500 hover:text-slate-950" href="#">
+                  </Link>
+                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#">
                     Privacy
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
