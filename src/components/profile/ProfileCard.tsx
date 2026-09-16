@@ -345,6 +345,34 @@ export function ProfileCard({ user }: ProfileCardProps) {
           </div>
         </div>
       </div>
+
+      {/* ─────────────────────────────────────────
+       * Organization & Account Details
+       * ───────────────────────────────────────── */}
+      <div className="rounded-[32px] border border-slate-200/80 bg-md-surface-container p-6 sm:p-8 shadow-sm">
+        <h2 className="text-xl font-bold tracking-tight text-md-on-surface">
+          Account & Organization Details
+        </h2>
+        <p className="mt-1 text-sm text-md-on-surface-variant">
+          Organization identity parameters used for tenant-scoped knowledge isolation.
+        </p>
+
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+            <span className="text-xs font-medium text-slate-500">Organization Name</span>
+            <p className="mt-1 font-semibold text-slate-900 dark:text-white">
+              {user.organization_name}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+            <span className="text-xs font-medium text-slate-500">Tenant Identifier</span>
+            <p className="mt-1 font-mono text-xs text-slate-600 dark:text-slate-400">
+              {user.organization_id || "Unassigned"}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

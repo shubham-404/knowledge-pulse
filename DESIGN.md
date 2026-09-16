@@ -649,9 +649,16 @@ The Milestone 2 workspace delivers an authenticated, secondary-navigated intelli
 - **Responsiveness**: Wrapped in `<ResponsiveContainer width="100%" height={280}>` to ensure fluid resizing on all viewports without layout distortion.
 
 ### 3. Conversational Assistant & Source Evidence (`/ask`)
+- **Ephemeral State Architecture**:
+  - `ChatSessionProvider` mounted at the protected layout level preserves conversation state during client-side navigation between sibling workspace routes (`/ask` ↔ `/insights` ↔ `/report` ↔ `/overview` ↔ `/sources` ↔ `/evaluation`).
+  - Full page reload recreates the React tree, automatically resetting messages and generating a fresh UUID `sessionId`.
+  - Zero reliance on browser storage (`localStorage`, `sessionStorage`, `IndexedDB`).
+- **New Chat Action**:
+  - Ghost pill button (`New chat`) in the chat header allowing manual reset of message history and fresh session initialization without refreshing the page.
 - **Message Bubbles**:
   - User: Primary purple pill bubble (`bg-[#6750A4] text-white rounded-3xl rounded-tr-md px-5 py-3.5`).
   - Assistant: Surface container card (`bg-[#F3EDF7] text-[#1C1B1F] rounded-3xl rounded-tl-md border border-[#79747E]/15 px-5 py-3.5`).
+  - Calm Loading Indicator: Three pulsing dots in an assistant bubble during query processing.
 - **Confidence Meter**:
   - Pill meter rendering dynamic percentage with semantic threshold coloring (Green >= 80%, Amber 60-79%, Rose < 60%).
 - **Collapsible Citations**:

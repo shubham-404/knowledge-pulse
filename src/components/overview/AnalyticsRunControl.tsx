@@ -20,7 +20,7 @@ export function AnalyticsRunControl({ period }: AnalyticsRunControlProps) {
       const result = await triggerAnalyticsBatchAction(period);
       if (result.success) {
         setStatusMessage(
-          "Analytics batch started. Results will appear once processing completes."
+          "Analytics started. Results will appear once processing completes."
         );
       } else {
         setStatusMessage(result.error || "Unable to start analytics.");

@@ -21,6 +21,7 @@ export interface IUser extends Document {
   password: string;
   name: string;
   organization_name: string;
+  organization_id: string;
   services: string[];
   subscription: "active" | "inactive";
   verifyCode?: string;
@@ -37,6 +38,7 @@ export interface SafeUser {
   email: string;
   name: string;
   organization_name: string;
+  organization_id: string;
   services: string[];
   subscription: "active" | "inactive";
   isVerified: boolean;
@@ -80,6 +82,12 @@ const UserSchema = new Schema<IUser>(
       index: true,
     },
     organization_name: { type: String, required: true, trim: true },
+    organization_id: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
     password: { type: String, required: true },
     services: { type: [String], default: [] },
     subscription: {
@@ -104,6 +112,7 @@ interface UserLike {
   email: string;
   name: string;
   organization_name: string;
+  organization_id?: string;
   services?: string[];
   subscription?: "active" | "inactive";
   isVerified?: boolean;
@@ -123,6 +132,7 @@ export function toSafeUser(user: IUser | UserLike): SafeUser {
     email: plain.email,
     name: plain.name,
     organization_name: plain.organization_name,
+    organization_id: plain.organization_id ?? "",
     services: plain.services ?? [],
     subscription: plain.subscription ?? "inactive",
     isVerified: Boolean(plain.isVerified),

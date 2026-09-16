@@ -49,11 +49,13 @@ export async function registerUser(
     const hashedPassword = await hashPassword(password);
     const verifyCode = crypto.randomInt(100000, 999999).toString();
     const verifyCodeExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    const organization_id = `org_${crypto.randomUUID()}`;
 
     const newUser = await User.create({
       name,
       email: normalizedEmail,
       organization_name,
+      organization_id,
       password: hashedPassword,
       services: [],
       subscription: "inactive",

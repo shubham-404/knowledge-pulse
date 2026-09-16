@@ -13,6 +13,7 @@ Read this before making structural changes.
 KnowledgePulse has completed:
 - **Milestone 1**: Full-stack account, authentication, service selection, and resource onboarding layer.
 - **Milestone 2**: Authenticated Intelligence Workspace & FastAPI Backend Integration.
+- **Milestone 3**: Organization-based Tenancy Synchronization & Ephemeral Chat Persistence.
 
 Implemented:
 
@@ -22,18 +23,23 @@ Implemented:
 - shadcn/ui & Base UI primitives
 - React Hook Form + Zod schema validation (Zod 4)
 - MongoDB integration via Mongoose with cached connection pooling (`src/lib/db.ts`)
-- Mongoose User model with safe user projections (`src/models/user.ts`)
+- Mongoose User model with `organization_id` tenancy identifier and safe user projections (`src/models/user.ts`)
+- Server-side `org_<UUID>` generation on registration and one-time legacy backfill migration (`pnpm migrate:org`)
 - Stateless JWT authentication via `jose` (`kp_session` httpOnly cookie)
 - Password hashing & verification with `bcryptjs`
-- Server-side auth helpers (`getCurrentUser()`, `requireUser()`)
+- Server-side auth helpers (`getCurrentUser()`, `requireUser()`, `getFastAPIUserContext()`)
 - Server Actions (`src/actions/auth.ts`, `src/actions/user.ts`, `src/actions/intelligence.ts`)
 - API Route Handlers (`src/app/api/auth/*`)
 - Protected route layout with server-side authentication enforcement (`src/app/(protected)/layout.tsx`)
+- Persistent `ChatSessionProvider` mounted in protected layout ensuring in-memory conversation persistence across sibling routes without persistent browser storage
 - Nested workspace layout with secondary feature navigation (`src/app/(protected)/(workspace)/layout.tsx`)
 - Secondary feature navigation (`src/components/layout/FeatureSubNav.tsx`, `src/data/feature-navigation.json`)
 - **FastAPI Integration Layer** (`src/lib/fastapi/`):
   - Type-safe client matching `openapi.json` source of truth
-  - Automatic identity header injection (`X-User-Id: <user._id>`, `X-User-Email: <user.email>`)
+  - Server-enforced tenancy boundary header: `X-Organization-Id: <user.organization_id>`
+  - Contextual metadata headers: `X-User-Id: <user._id>`, `X-User-Email: <user.email>`
+  - Explicit stripping/overwriting of any client-spoofed tenant headers
+  - Controlled application error when authenticated user lacks `organization_id`
   - Server-only execution (`FASTAPI_BASE_URL` in `src/lib/env.ts`, never `NEXT_PUBLIC_*`)
   - Safe error extraction surfacing backend `detail` messages
   - Modular domain helpers: `sources`, `chat`, `overview`, `insights`, `reports`, `analytics`, `evaluation`, `health`
@@ -41,19 +47,20 @@ Implemented:
   - **This period** (`/overview`): System overview metrics, activity trends, confidence distribution, analytics batch execution
   - **Insights** (`/insights`, `/insights/[insightId]`): Signal lists, severity/trend indicators, historical chart, evidence links, member queries
   - **Report** (`/report`): Executive briefings, strategic recommendations, report archive
-  - **Ask** (`/ask`): Conversational assistant, lazy browser session management, collapsible citations, confidence scoring
+  - **Ask** (`/ask`): Conversational assistant, ephemeral `ChatSessionProvider` connection, collapsible citations, confidence scoring
   - **Sources** (`/sources`): Website and document source registry, index status badges, reindexing, and deletion
   - **Evaluation** (`/evaluation`): Quality metrics (faithfulness, relevancy, latency, cost), failure trace logs
 - Recharts visualizations styled with Material You tonal color palettes (`#6750A4`, `#7D5260`, `#49454F`)
 - Resilient UI error boundaries, independent loading skeletons, and graceful offline backend status displays
-- Vitest unit, component, and action test suite (10 suites, 47 tests)
-- Playwright end-to-end browser user journey tests (11 tests covering auth flows and workspace route guards)
+- Vitest unit, component, and action test suite (12 suites, 57 tests)
+- Playwright end-to-end browser user journey tests (12 tests covering auth flows, workspace route guards, and chat navigation persistence)
 - Environment configuration with centralized access (`src/lib/env.ts`)
 - GitHub Actions CI & Docker multi-stage container
 
 Architecture Boundary & Responsibilities:
-- Next.js is strictly the presentation and product delivery layer.
+- Next.js is strictly the presentation, user management, and tenant identification layer.
 - Next.js does NOT implement AI/LLM models, embeddings, RAG pipelines, or analytics computation.
+- Next.js resolves authenticated tenant identity (`user.organization_id`) and injects `X-Organization-Id` server-side into all FastAPI requests.
 - All intelligence operations are delegated to the existing FastAPI backend via the authenticated server-side client.
 - No mocks, placeholders, or fake analytics data are used in the application.
 

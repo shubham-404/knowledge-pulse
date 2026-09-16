@@ -1,83 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { sendChatMessage } from "@/actions/intelligence";
+import { MessageSquarePlus } from "lucide-react";
 import { ChatComposer } from "./ChatComposer";
-import { ChatMessage } from "./MessageBubble";
 import { MessageList } from "./MessageList";
+import { useChatSession } from "./ChatSessionProvider";
 
 export function ChatWindow() {
-  const [sessionId] = useState<string>(() => {
-    if (typeof window === "undefined") return "";
-    let id = sessionStorage.getItem("kp_chat_session_id");
-    if (!id) {
-      id =
-        typeof crypto !== "undefined" && crypto.randomUUID
-          ? crypto.randomUUID()
-          : `sess_${Date.now()}`;
-      try {
-        sessionStorage.setItem("kp_chat_session_id", id);
-      } catch {
-        // Fallback for private mode
-      }
-    }
-    return id;
-  });
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function handleSend(question: string) {
-    if (!question.trim() || isLoading) return;
-
-    const userMessage: ChatMessage = {
-      id: `user_${Date.now()}`,
-      role: "user",
-      text: question,
-      createdAt: new Date().toISOString(),
-      confidence: null,
-      citations: [],
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setIsLoading(true);
-
-    try {
-      const result = await sendChatMessage(question, sessionId);
-
-      if (result.success && result.data) {
-        setMessages((prev) => [...prev, result.data!]);
-      } else {
-        const errorMessage: ChatMessage = {
-          id: `err_${Date.now()}`,
-          role: "assistant",
-          text: result.error || "Unable to get an answer right now. Please check if your intelligence backend is connected.",
-          createdAt: new Date().toISOString(),
-          confidence: null,
-          citations: [],
-          isError: true,
-        };
-        setMessages((prev) => [...prev, errorMessage]);
-      }
-    } catch {
-      const errorMessage: ChatMessage = {
-        id: `err_${Date.now()}`,
-        role: "assistant",
-        text: "Failed to communicate with intelligence service.",
-        createdAt: new Date().toISOString(),
-        confidence: null,
-        citations: [],
-        isError: true,
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const { messages, isSending, sendMessage, clearChat } = useChatSession();
 
   return (
     <div className="flex h-[calc(100vh-14rem)] min-h-[500px] flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-      <MessageList messages={messages} isLoading={isLoading} />
-      <ChatComposer onSend={handleSend} isLoading={isLoading} />
+      <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex items-center gap-2">
+          <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+            Assistant Active
+          </span>
+        </div>
+
+        {messages.length > 0 && (
+          <button
+            type="button"
+            onClick={clearChat}
+            disabled={isSending}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 shadow-xs transition hover:bg-slate-50 hover:text-slate-900 active:scale-95 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-300 dark:hover:bg-zinc-700"
+            title="Start a new chat session"
+            aria-label="New chat"
+          >
+            <MessageSquarePlus className="h-3.5 w-3.5" />
+            New chat
+          </button>
+        )}
+      </div>
+
+      <MessageList messages={messages} isLoading={isSending} />
+      <ChatComposer onSend={sendMessage} isLoading={isSending} />
     </div>
   );
 }

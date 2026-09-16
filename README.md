@@ -38,8 +38,8 @@ The project is intentionally kept small at the foundation level. The goal is to 
 ## Stack
 
 - **Next.js 16** — App Router + TypeScript
-- **MongoDB + Mongoose** — database persistence with connection caching
-- **FastAPI Integration Layer** — server-only client matching backend OpenAPI specifications with automatic identity headers (`X-User-Id`, `X-User-Email`)
+- **MongoDB + Mongoose** — database persistence with connection caching and tenant `organization_id` mapping
+- **FastAPI Integration Layer** — server-only client matching backend OpenAPI specifications with automatic tenant boundary header (`X-Organization-Id`) and identity headers (`X-User-Id`, `X-User-Email`)
 - **jose** — stateless JWT token signing and verification for session cookies
 - **bcryptjs** — secure password hashing
 - **Tailwind CSS** — styling adhering to Material Design 3 (Material You)
@@ -199,6 +199,7 @@ http://localhost:3000
 | `pnpm test:watch` | Run Vitest in watch mode |
 | `pnpm test:e2e` | Run Playwright E2E tests |
 | `pnpm test:e2e:ui` | Open Playwright UI mode |
+| `pnpm migrate:org` | Backfill unique `org_<UUID>` for legacy MongoDB users missing `organization_id` |
 | `pnpm build` | Create a production Next.js build |
 | `pnpm start` | Run the production build locally |
 | `pnpm docker:build` | Build the production Docker image |
@@ -334,6 +335,21 @@ General rule:
 - Never commit real credentials.
 
 The project exposes application environment values through `src/lib/env.ts` so environment access stays centralized.
+
+### Tenancy & Backend Integration
+
+- **MongoDB Account Tenancy**: Every user document contains a server-generated `organization_id` (`org_<UUID>`).
+- **FastAPI Isolation**: Next.js automatically injects `X-Organization-Id: <user.organization_id>` into all tenant-scoped outgoing FastAPI requests. `X-User-Id` and `X-User-Email` are attached as metadata.
+- **FastAPI Scope**: The backend scopes all vector retrieval, ingestion, conversations, analytics, and reports to `organization_id`.
+- **Tenancy Constraint**: The application currently assumes **one user = one organization**. Multi-user organization management is deferred to future milestones.
+- **Legacy Migration**: Run `pnpm migrate:org` to backfill missing `organization_id`s on existing MongoDB accounts.
+
+### Ephemeral Chat Persistence
+
+- Chat conversation state is managed in-memory via `ChatSessionProvider` mounted in `src/app/(protected)/layout.tsx`.
+- Conversations seamlessly survive navigation across sibling workspace routes (e.g. `/ask` ↔ `/insights` ↔ `/report`).
+- Full page reload resets the React tree, starting a fresh conversation with a new `sessionId`.
+- Zero persistent storage (`localStorage`, `sessionStorage`, `IndexedDB`, cookies) is used.
 
 ## CI workflow
 

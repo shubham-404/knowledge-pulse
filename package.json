@@ -12,7 +12,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "docker:build": "docker build -t knowledge-pulse:local .",
-    "docker:run": "docker run --rm -p 3000:3000 knowledge-pulse:local"
+    "docker:run": "docker run --rm -p 3000:3000 knowledge-pulse:local",
+    "migrate:org": "tsx scripts/migrate-organization-id.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -53,6 +54,7 @@
     "eslint-config-next": "16.3.3",
     "jsdom": "^30.0.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5",
     "vitest": "^4.1.11"
   },

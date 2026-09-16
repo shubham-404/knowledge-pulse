@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import { env } from "@/lib/env";
+import { getFastAPIUserContext } from "./context";
 import { FastApiClientError } from "./errors";
 
 export interface FastApiRequestOptions extends Omit<RequestInit, "body"> {
@@ -8,12 +9,15 @@ export interface FastApiRequestOptions extends Omit<RequestInit, "body"> {
   user?: {
     id: string;
     email: string;
+    organization_id?: string;
   } | null;
+  requireTenant?: boolean;
 }
 
 /**
  * Server-only fetcher communicating with FastAPI backend.
  * Automatically resolves current user identity and attaches:
+ * - X-Organization-Id: <user.organization_id> (primary tenant boundary)
  * - X-User-Id: <MongoDB user ID>
  * - X-User-Email: <User email>
  */
@@ -21,21 +25,44 @@ export async function fetchFastApi<T>(
   endpoint: string,
   options: FastApiRequestOptions = {}
 ): Promise<T> {
-  const { body, params, user: explicitUser, headers: customHeaders, ...restOptions } = options;
+  const { body, params, user: explicitUser, headers: customHeaders, requireTenant: explicitRequireTenant, ...restOptions } = options;
 
-  // Resolve user context
+  const isHealthCheck = endpoint === "/api/health" || endpoint === "api/health";
+  const requireTenant = explicitRequireTenant ?? !isHealthCheck;
+
+  let orgId = explicitUser?.organization_id;
   let userId = explicitUser?.id;
   let userEmail = explicitUser?.email;
 
-  if (!userId || !userEmail) {
-    try {
-      const currentUser = await getCurrentUser();
-      if (currentUser) {
-        userId = currentUser.id;
-        userEmail = currentUser.email;
+  if (requireTenant) {
+    if (explicitUser) {
+      if (!orgId || orgId.trim() === "") {
+        throw new FastApiClientError(
+          "Your account is missing an organization identifier. Please contact support.",
+          400
+        );
       }
-    } catch {
-      // Allow unauthenticated fallback for health checks or during tests
+    } else {
+      const context = await getFastAPIUserContext(false);
+      orgId = context.organizationId;
+      userId = context.userId;
+      userEmail = context.email;
+    }
+  } else {
+    // If tenant context is not strictly required (e.g. /api/health), check if user context is available
+    if (!userId || !userEmail) {
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          userId = currentUser.id;
+          userEmail = currentUser.email;
+          if (currentUser.organization_id) {
+            orgId = currentUser.organization_id;
+          }
+        }
+      } catch {
+        // Allow unauthenticated fallback for health checks
+      }
     }
   }
 
@@ -54,6 +81,14 @@ export async function fetchFastApi<T>(
 
   const headers = new Headers(customHeaders);
 
+  // Security: client input/headers must never override server-derived tenant identity
+  headers.delete("X-Organization-Id");
+  headers.delete("X-User-Id");
+  headers.delete("X-User-Email");
+
+  if (orgId) {
+    headers.set("X-Organization-Id", orgId.trim());
+  }
   if (userId) {
     headers.set("X-User-Id", userId);
   }

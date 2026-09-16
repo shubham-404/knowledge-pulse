@@ -107,7 +107,7 @@ test.describe("Full User Journey: Registration, Services, Resources & Profile", 
       page.getByRole("heading", { name: testName }),
     ).toBeVisible();
     await expect(page.getByText(testEmail)).toBeVisible();
-    await expect(page.getByText(testOrg)).toBeVisible();
+    await expect(page.getByText(testOrg).first()).toBeVisible();
 
     // Verify selected services appear on profile
     await expect(
