@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { logoutUser } from "@/actions/auth";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { SafeUser } from "@/models/user";
+import Logo from "../design/Logo";
 
 interface NavbarProps {
   user?: SafeUser | null;
@@ -33,7 +34,7 @@ export function Navbar({ user: initialUser }: NavbarProps) {
           setFetchedUser(data.user);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
 
     return () => {
       isMounted = false;
@@ -55,10 +56,10 @@ export function Navbar({ user: initialUser }: NavbarProps) {
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/90">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-md-primary text-white shadow-sm">
-            <Sparkles className="h-4.5 w-4.5" />
-          </div>
+        <Link href="/" className="flex items-center gap-1">
+
+          <Logo w={35} h={35} />
+
 
           <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
             Knowledge<span className="text-md-primary">Pulse</span>
@@ -70,46 +71,42 @@ export function Navbar({ user: initialUser }: NavbarProps) {
           <nav className="hidden items-center gap-6 md:flex">
             <Link
               href="/overview"
-              className={`text-sm font-medium transition hover:text-md-primary ${
-                pathname.startsWith("/overview") ||
-                pathname.startsWith("/insights") ||
-                pathname.startsWith("/report") ||
-                pathname.startsWith("/ask") ||
-                pathname.startsWith("/sources") ||
-                pathname.startsWith("/evaluation")
+              className={`text-sm font-medium transition hover:text-md-primary ${pathname.startsWith("/overview") ||
+                  pathname.startsWith("/insights") ||
+                  pathname.startsWith("/report") ||
+                  pathname.startsWith("/ask") ||
+                  pathname.startsWith("/sources") ||
+                  pathname.startsWith("/evaluation")
                   ? "text-md-primary font-semibold"
                   : "text-slate-600 dark:text-slate-300"
-              }`}
+                }`}
             >
               Workspace
             </Link>
             <Link
               href="/services"
-              className={`text-sm font-medium transition hover:text-md-primary ${
-                pathname === "/services"
+              className={`text-sm font-medium transition hover:text-md-primary ${pathname === "/services"
                   ? "text-md-primary font-semibold"
                   : "text-slate-600 dark:text-slate-300"
-              }`}
+                }`}
             >
               Services
             </Link>
             <Link
               href="/onboarding/resources"
-              className={`text-sm font-medium transition hover:text-md-primary ${
-                pathname === "/onboarding/resources"
+              className={`text-sm font-medium transition hover:text-md-primary ${pathname === "/onboarding/resources"
                   ? "text-md-primary font-semibold"
                   : "text-slate-600 dark:text-slate-300"
-              }`}
+                }`}
             >
               Resources
             </Link>
             <Link
               href="/profile"
-              className={`text-sm font-medium transition hover:text-md-primary ${
-                pathname === "/profile"
+              className={`text-sm font-medium transition hover:text-md-primary ${pathname === "/profile"
                   ? "text-md-primary font-semibold"
                   : "text-slate-600 dark:text-slate-300"
-              }`}
+                }`}
             >
               Profile
             </Link>

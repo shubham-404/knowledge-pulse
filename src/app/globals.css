@@ -323,6 +323,7 @@
   }
 
   html {
+    scroll-behavior: smooth;
     font-family: var(--font-roboto);
     background: var(--background);
     color: var(--foreground);
@@ -337,6 +338,7 @@
     min-height: 100vh;
     font-family: var(--font-roboto);
     line-height: 1.5;
+    scroll-behavior: smooth;
   }
 
   /*

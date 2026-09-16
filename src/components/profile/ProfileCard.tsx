@@ -18,7 +18,7 @@ import {
   Mail,
   Plus,
   ShieldCheck,
-  Sparkles,
+  Sparkles, BriefcaseBusiness
 } from "lucide-react";
 
 import { logoutUser } from "@/actions/auth";
@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import servicesData from "@/data/services.json";
 import { SafeUser } from "@/models/user";
+import { BriefcaseBusinessFreeIcons } from "@hugeicons/core-free-icons";
 
 interface ProfileCardProps {
   user: SafeUser;
@@ -99,7 +100,7 @@ export function ProfileCard({ user }: ProfileCardProps) {
               href="/overview"
               className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-xs transition hover:bg-[#6750A4] active:scale-95 dark:bg-white dark:text-slate-950"
             >
-              <Sparkles className="h-4 w-4" />
+              <BriefcaseBusiness className="h-4 w-4" />
               Open Workspace
             </Link>
 

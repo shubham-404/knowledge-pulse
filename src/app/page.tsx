@@ -1,16 +1,18 @@
 "use client";
 
 import {
+  Activity,
   ArrowRight,
   BarChart3,
   Bot,
+  BotIcon,
+  BrainCircuit,
   Check,
   ChevronRight,
   FileText,
   Lightbulb,
   MessageSquare,
   Search,
-  Sparkles,
   TrendingUp,
   Upload,
 } from "lucide-react";
@@ -42,7 +44,7 @@ const insights = [
     priority: "Medium",
     color: "text-blue-600 bg-blue-50",
   },
-]
+];
 
 export default function KnowledgePulseHome() {
   return (
@@ -57,7 +59,7 @@ export default function KnowledgePulseHome() {
           <div className="mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pt-24 lg:px-8 lg:pb-28">
             <div className="mx-auto max-w-4xl text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3.5 py-1.5 text-sm font-medium text-indigo-700">
-                <Sparkles className="h-3.5 w-3.5" />
+                <BotIcon className="h-3.5 w-3.5" />
                 AI-powered customer intelligence
               </div>
 
@@ -76,12 +78,18 @@ export default function KnowledgePulseHome() {
               </p>
 
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <Link href="#insights" className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700">
+                <Link
+                  href="/register"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700"
+                >
                   Start discovering insights
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
-                <Link href="#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">
+                <Link
+                  href="#how-it-works"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+                >
                   See how it works
                   <ChevronRight className="h-4 w-4" />
                 </Link>
@@ -92,10 +100,12 @@ export default function KnowledgePulseHome() {
                   <Check className="h-3.5 w-3.5 text-emerald-600" />
                   RAG-powered
                 </span>
+
                 <span className="flex items-center gap-1.5">
                   <Check className="h-3.5 w-3.5 text-emerald-600" />
                   Evidence-backed insights
                 </span>
+
                 <span className="flex items-center gap-1.5">
                   <Check className="h-3.5 w-3.5 text-emerald-600" />
                   Automated reports
@@ -121,29 +131,37 @@ export default function KnowledgePulseHome() {
                     <aside className="hidden border-r border-slate-200 bg-white p-4 md:block">
                       <div className="mb-7 flex items-center gap-2">
                         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-white">
-                          <Sparkles className="h-3.5 w-3.5" />
+                          <Activity className="h-3.5 w-3.5" />
                         </div>
-                        <span className="text-xs font-bold">KnowledgePulse</span>
+
+                        <span className="text-xs font-bold">
+                          KnowledgePulse
+                        </span>
                       </div>
 
                       <div className="space-y-1">
                         {[
-                          ["Overview", BarChart3],
-                          ["Conversations", MessageSquare],
-                          ["Knowledge", FileText],
-                          ["Insights", Lightbulb],
-                        ].map(([label, Icon], index) => (
-                          <div
+                          ["Overview", BarChart3, "/overview"],
+                          [
+                            "Conversations",
+                            MessageSquare,
+                            "/ask",
+                          ],
+                          ["Knowledge", FileText, "/sources"],
+                          ["Insights", Lightbulb, "/insights"],
+                        ].map(([label, Icon, href], index) => (
+                          <Link
                             key={label as string}
-                            className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium ${
+                            href={href as string}
+                            className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition ${
                               index === 0
                                 ? "bg-indigo-50 text-indigo-700"
-                                : "text-slate-500"
+                                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                             }`}
                           >
                             <Icon className="h-3.5 w-3.5" />
                             {label as string}
-                          </div>
+                          </Link>
                         ))}
                       </div>
                     </aside>
@@ -155,6 +173,7 @@ export default function KnowledgePulseHome() {
                           <p className="text-xs font-medium text-slate-500">
                             Customer intelligence
                           </p>
+
                           <h3 className="mt-1 text-lg font-bold text-slate-950">
                             Overview
                           </h3>
@@ -180,9 +199,11 @@ export default function KnowledgePulseHome() {
                             <p className="text-xl font-bold tracking-tight">
                               {value}
                             </p>
+
                             <p className="mt-1 text-[11px] text-slate-500">
                               {label}
                             </p>
+
                             <p className="mt-2 text-[10px] font-semibold text-emerald-600">
                               {trend}
                             </p>
@@ -192,12 +213,14 @@ export default function KnowledgePulseHome() {
 
                       {/* Main dashboard */}
                       <div className="mt-5 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+                        {/* Customer topics */}
                         <div className="rounded-xl border border-slate-200 bg-white p-5">
                           <div className="flex items-center justify-between">
                             <div>
                               <p className="text-xs font-semibold">
                                 Customer topics
                               </p>
+
                               <p className="mt-1 text-[10px] text-slate-500">
                                 Volume over the last 30 days
                               </p>
@@ -207,22 +230,22 @@ export default function KnowledgePulseHome() {
                           </div>
 
                           <div className="mt-6 flex h-36 items-end gap-2">
-                            {[32, 44, 39, 58, 48, 70, 62, 78, 68, 88, 75, 96].map(
-                              (height, index) => (
+                            {[
+                              32, 44, 39, 58, 48, 70, 62, 78, 68, 88, 75, 96,
+                            ].map((height, index) => (
+                              <div
+                                key={index}
+                                className="flex-1 rounded-t-md bg-indigo-100"
+                                style={{ height: `${height}%` }}
+                              >
                                 <div
-                                  key={index}
-                                  className="flex-1 rounded-t-md bg-indigo-100"
-                                  style={{ height: `${height}%` }}
-                                >
-                                  <div
-                                    className="h-full rounded-t-md bg-indigo-500"
-                                    style={{
-                                      opacity: index > 8 ? 0.95 : 0.55,
-                                    }}
-                                  />
-                                </div>
-                              )
-                            )}
+                                  className="h-full rounded-t-md bg-indigo-500"
+                                  style={{
+                                    opacity: index > 8 ? 0.95 : 0.55,
+                                  }}
+                                />
+                              </div>
+                            ))}
                           </div>
 
                           <div className="mt-4 flex justify-between text-[9px] text-slate-400">
@@ -232,16 +255,19 @@ export default function KnowledgePulseHome() {
                           </div>
                         </div>
 
+                        {/* Priority insights */}
                         <div className="rounded-xl border border-slate-200 bg-white p-5">
                           <div className="flex items-center justify-between">
                             <div>
                               <p className="text-xs font-semibold">
                                 Priority insights
                               </p>
+
                               <p className="mt-1 text-[10px] text-slate-500">
                                 Ranked by impact
                               </p>
                             </div>
+
                             <Lightbulb className="h-4 w-4 text-amber-500" />
                           </div>
 
@@ -255,6 +281,7 @@ export default function KnowledgePulseHome() {
                                   <p className="text-[10px] font-semibold leading-4">
                                     {insight.title}
                                   </p>
+
                                   <span
                                     className={`rounded px-1.5 py-0.5 text-[8px] font-semibold ${insight.color}`}
                                   >
@@ -264,6 +291,7 @@ export default function KnowledgePulseHome() {
 
                                 <div className="mt-2 flex items-center justify-between text-[8px] text-slate-400">
                                   <span>{insight.type}</span>
+
                                   <span className="font-semibold text-rose-500">
                                     {insight.trend}
                                   </span>
@@ -305,8 +333,10 @@ export default function KnowledgePulseHome() {
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-indigo-600 shadow-sm ring-1 ring-slate-200">
                   <item.icon className="h-5 w-5" />
                 </div>
+
                 <div>
                   <h3 className="text-sm font-bold">{item.title}</h3>
+
                   <p className="mt-1 text-sm leading-6 text-slate-500">
                     {item.text}
                   </p>
@@ -380,11 +410,22 @@ export default function KnowledgePulseHome() {
                   </div>
 
                   <h3 className="mt-6 font-bold">{item.title}</h3>
+
                   <p className="mt-2 text-sm leading-6 text-slate-500">
                     {item.text}
                   </p>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-10">
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700"
+              >
+                Explore KnowledgePulse
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>
@@ -406,8 +447,8 @@ export default function KnowledgePulseHome() {
 
               <p className="mt-5 text-base leading-7 text-slate-400">
                 KnowledgePulse doesn&apos;t simply count conversations. It
-                identifies what is changing, what&apos;s unresolved and what your
-                customers are struggling with most.
+                identifies what is changing, what&apos;s unresolved and what
+                your customers are struggling with most.
               </p>
 
               <div className="mt-8 space-y-5">
@@ -432,6 +473,7 @@ export default function KnowledgePulseHome() {
 
                     <div>
                       <h3 className="text-sm font-semibold">{title}</h3>
+
                       <p className="mt-1 text-sm leading-6 text-slate-400">
                         {text}
                       </p>
@@ -439,6 +481,14 @@ export default function KnowledgePulseHome() {
                   </div>
                 ))}
               </div>
+
+              <Link
+                href="/register"
+                className="mt-8 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Discover customer insights
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             {/* Insight card */}
@@ -452,6 +502,7 @@ export default function KnowledgePulseHome() {
                       <p className="text-xs text-slate-500">
                         Insight detected
                       </p>
+
                       <h3 className="mt-1 font-semibold">
                         Password reset confusion
                       </h3>
@@ -465,6 +516,7 @@ export default function KnowledgePulseHome() {
                   <div className="mt-6 grid grid-cols-3 gap-3">
                     <div className="rounded-lg bg-white/[0.04] p-3">
                       <p className="text-lg font-bold">+42%</p>
+
                       <p className="mt-1 text-[10px] text-slate-500">
                         Query growth
                       </p>
@@ -472,6 +524,7 @@ export default function KnowledgePulseHome() {
 
                     <div className="rounded-lg bg-white/[0.04] p-3">
                       <p className="text-lg font-bold">38%</p>
+
                       <p className="mt-1 text-[10px] text-slate-500">
                         Confidence
                       </p>
@@ -479,6 +532,7 @@ export default function KnowledgePulseHome() {
 
                     <div className="rounded-lg bg-white/[0.04] p-3">
                       <p className="text-lg font-bold">127</p>
+
                       <p className="mt-1 text-[10px] text-slate-500">
                         Questions
                       </p>
@@ -488,10 +542,12 @@ export default function KnowledgePulseHome() {
                   <div className="mt-5 rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-4">
                     <div className="flex gap-3">
                       <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-indigo-400" />
+
                       <div>
                         <p className="text-xs font-semibold text-indigo-300">
                           Recommended action
                         </p>
+
                         <p className="mt-1 text-xs leading-5 text-slate-400">
                           Update the account recovery documentation with a
                           dedicated password reset walkthrough.
@@ -613,7 +669,10 @@ export default function KnowledgePulseHome() {
                   product intelligence.
                 </p>
 
-                <Link href="#product" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+                <Link
+                  href="/register"
+                  className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+                >
                   Explore the platform
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -652,6 +711,7 @@ export default function KnowledgePulseHome() {
 
                     <div>
                       <h3 className="text-sm font-bold">{title}</h3>
+
                       <p className="mt-1 text-sm leading-6 text-slate-500">
                         {text}
                       </p>
@@ -666,7 +726,7 @@ export default function KnowledgePulseHome() {
         {/* CTA */}
         <section className="px-4 py-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-indigo-600 px-6 py-16 text-center text-white shadow-2xl shadow-indigo-600/20 sm:px-12">
-            <Sparkles className="mx-auto h-7 w-7 text-indigo-200" />
+            <BrainCircuit className="mx-auto h-7 w-7 text-indigo-200" />
 
             <h2 className="mx-auto mt-5 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
               Stop letting valuable customer conversations disappear.
@@ -677,7 +737,10 @@ export default function KnowledgePulseHome() {
               your product, documentation and customer experience teams.
             </p>
 
-            <Link href="#product" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-indigo-700 shadow-lg transition hover:bg-indigo-50">
+            <Link
+              href="/register"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-indigo-700 shadow-lg transition hover:bg-indigo-50"
+            >
               Get started with KnowledgePulse
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -690,9 +753,9 @@ export default function KnowledgePulseHome() {
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-8 md:flex-row">
             <div>
-              <Link href="#" className="flex items-center gap-2.5">
+              <Link href="/" className="flex items-center gap-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white">
-                  <Sparkles className="h-4 w-4" />
+                  <Activity className="h-4 w-4" />
                 </div>
 
                 <span className="font-bold tracking-tight text-slate-950">
@@ -707,36 +770,76 @@ export default function KnowledgePulseHome() {
             </div>
 
             <div className="flex gap-12">
+              {/* Platform */}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Platform
                 </p>
+
                 <div className="mt-4 space-y-3">
-                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#product">
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="#product"
+                  >
                     Product
                   </Link>
-                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#insights">
+
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="#insights"
+                  >
                     Insights
                   </Link>
-                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#features">
+
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="#features"
+                  >
                     Features
+                  </Link>
+
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="/register"
+                  >
+                    Get started
                   </Link>
                 </div>
               </div>
 
+              {/* Company */}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Company
                 </p>
+
                 <div className="mt-4 space-y-3">
-                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#">
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="/about"
+                  >
                     About
                   </Link>
-                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#">
+
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="/contact"
+                  >
                     Contact
                   </Link>
-                  <Link className="block text-sm text-slate-500 hover:text-slate-950" href="#">
+
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="/privacy"
+                  >
                     Privacy
+                  </Link>
+
+                  <Link
+                    className="block text-sm text-slate-500 hover:text-slate-950"
+                    href="/login"
+                  >
+                    Log in
                   </Link>
                 </div>
               </div>
@@ -751,5 +854,5 @@ export default function KnowledgePulseHome() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

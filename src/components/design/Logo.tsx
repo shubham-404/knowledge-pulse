@@ -10,9 +10,9 @@ const Logo = ({w, h}: LogoProps) => {
     return (
         <div>
             <Image
-                src="/images/logo.jpg"
-                width={w}
-                height={h}
+                src="/images/logo-nobg.png"
+                width={w || 32}
+                height={h || 32}
                 alt="KnowledgePulse"
                 className="rounded-full"
             />

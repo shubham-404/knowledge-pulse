@@ -31,9 +31,9 @@ export default function RegisterPage() {
 
           <div className="relative flex min-h-[300px] flex-col justify-between p-6 sm:p-10 lg:min-h-screen lg:p-14 xl:p-20">
             {/* Brand */}
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
-                <Logo w={80} h={80} />
+            <div className="flex items-center gap-1">
+              <div className="flex h-11 w-11 items-center justify-center">
+                <Logo w={50} h={50} />
               </div>
 
               <Link
@@ -46,10 +46,10 @@ export default function RegisterPage() {
 
             {/* Value Proposition */}
             <div className="max-w-xl py-10 lg:py-0">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium backdrop-blur-sm">
+              <div className="my-2 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium backdrop-blur-sm">
                 <span
                   aria-hidden="true"
-                  className="h-2 w-2 rounded-full bg-md-secondary-container"
+                  className="p-1 rounded-full bg-md-secondary-container"
                 />
                 Intelligent Knowledge Onboarding
               </div>
